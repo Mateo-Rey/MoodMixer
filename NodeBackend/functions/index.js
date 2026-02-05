@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import cookieParser from "cookie-parser"
+import { authFunctions } from "./routes/auth.js";
 dotenv.config();
 
 const app = express();
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 5123;
 /* ──────────────────── MIDDLEWARE ──────────────────── */
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 
 /* ──────────────────── HEALTH CHECK ──────────────────── */
 app.get("/", (req, res) => {
@@ -21,13 +23,9 @@ app.get("/", (req, res) => {
 
 /* ──────────────────── AUTH ROUTES (PLACEHOLDER) ──────────────────── */
 // Later: Spotify OAuth login & callback
-app.get("/auth/login", (req, res) => {
-  res.send("Spotify login route");
-});
+app.get("/auth/login", authFunctions.spotifyLogin);
 
-app.get("/auth/callback", (req, res) => {
-  res.send("Spotify callback route");
-});
+app.get("/callback", authFunctions.callback);
 
 /* ──────────────────── RECOMMENDATIONS (PLACEHOLDER) ──────────────────── */
 app.post("/recommendations", async (req, res) => {
