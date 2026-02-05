@@ -1,8 +1,3 @@
-Absolutely! Based on your project so far — a Spotify Mood Mixer app with React frontend, Node/Express backend, Firebase for refresh token storage, and OAuth + recommendation features — here’s a solid `README.md` you can use:
-
----
-
-````markdown
 # Spotify Mood Mixer 🎧
 
 Spotify Mood Mixer is a personalized music discovery app that helps you find songs, artists, and genres matching your mood. Mix and match your favorite artists, tracks, and genres, adjust audio features like valence, energy, and tempo, and get personalized recommendations directly from Spotify.
