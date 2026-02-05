@@ -1,5 +1,6 @@
 import crypto from "crypto";
-
+import {db} from "../db/firebase.js"
+import { signSession } from "../utils/jwt.js";
 function generateState() {
   return crypto.randomBytes(16).toString("hex");
 }
@@ -9,7 +10,7 @@ const spotifyLogin = async (req, res) => {
 
     res.cookie("spotify_auth_state", state, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     sameSite: "lax",
     });
 
@@ -88,10 +89,15 @@ const callback = async (req, res) => {
       userId: profile.id,
       spotifyUserId: profile.id,
     });
-
+    res.cookie('jwt', token, {
+    httpOnly: true,       // cannot be accessed by JS
+    secure: false,         // only over HTTPS
+    sameSite: 'strict',   // prevents CSRF
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
+  });
     /* ───── Redirect to React ───── */
     res.redirect(
-      `${process.env.FRONTEND_URL}/auth/success?token=${jwtToken}`
+      `${process.env.FRONTEND_URL}}`
     );
 };
 

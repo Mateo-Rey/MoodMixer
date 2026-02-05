@@ -3,13 +3,17 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser"
 import { authFunctions } from "./routes/auth.js";
+import { spotifyFunctions } from "./routes/spotifyFunctions.js";
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5123;
 
 /* ──────────────────── MIDDLEWARE ──────────────────── */
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser())
 
@@ -25,7 +29,12 @@ app.get("/", (req, res) => {
 // Later: Spotify OAuth login & callback
 app.get("/auth/login", authFunctions.spotifyLogin);
 
-app.get("/callback", authFunctions.callback);
+app.get("/auth/callback", authFunctions.callback);
+
+
+/* ──────────────────── SERVICE ROUTES (PLACEHOLDER) ──────────────────── */
+
+app.post("/service/spotifySearch", spotifyFunctions.searchSpotify)
 
 /* ──────────────────── RECOMMENDATIONS (PLACEHOLDER) ──────────────────── */
 app.post("/recommendations", async (req, res) => {
