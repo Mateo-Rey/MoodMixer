@@ -1,0 +1,58 @@
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5123;
+
+/* ──────────────────── MIDDLEWARE ──────────────────── */
+app.use(cors());
+app.use(express.json());
+
+/* ──────────────────── HEALTH CHECK ──────────────────── */
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Spotify Mood API running 🎧",
+  });
+});
+
+/* ──────────────────── AUTH ROUTES (PLACEHOLDER) ──────────────────── */
+// Later: Spotify OAuth login & callback
+app.get("/auth/login", (req, res) => {
+  res.send("Spotify login route");
+});
+
+app.get("/auth/callback", (req, res) => {
+  res.send("Spotify callback route");
+});
+
+/* ──────────────────── RECOMMENDATIONS (PLACEHOLDER) ──────────────────── */
+app.post("/recommendations", async (req, res) => {
+  const { mood, intensity } = req.body;
+
+  // TODO:
+  // 1. Get user access token
+  // 2. Fetch top tracks / recent tracks
+  // 3. Call Spotify recommendations endpoint
+  // 4. Score + filter tracks
+
+  res.json({
+    mood,
+    intensity,
+    recommendations: [],
+  });
+});
+
+/* ──────────────────── ERROR HANDLER ──────────────────── */
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+/* ──────────────────── START SERVER ──────────────────── */
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
